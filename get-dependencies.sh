@@ -37,6 +37,7 @@ pacman -Syu --noconfirm \
   gst-plugins-good \
   gst-plugins-bad \
   gst-plugin-gtk \
+  gst-thumbnailers \
   gst-libav
 
 echo "Installing debloated packages..."
