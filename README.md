@@ -2,9 +2,9 @@
 
 # Pix-AppImage 🐧
 
-[![GitHub Downloads](https://img.shields.io/github/downloads/ArqamQazi/Pix-AppImage/total?logo=github&label=GitHub%20Downloads)](https://github.com/ArqamQazi/Pix-AppImage/releases/latest)
-[![CI Build Status](https://github.com/ArqamQazi/Pix-AppImage/actions/workflows/appimage.yml/badge.svg)](https://github.com/ArqamQazi/Pix-AppImage/releases/latest)
-[![Latest Stable Release](https://img.shields.io/github/v/release/ArqamQazi/Pix-AppImage)](https://github.com/ArqamQazi/Pix-AppImage/releases/latest)
+[![GitHub Downloads](https://img.shields.io/github/downloads/pkgforge-dev/Pix-AppImage/total?logo=github&label=GitHub%20Downloads)](https://github.com/pkgforge-dev/Pix-AppImage/releases/latest)
+[![CI Build Status](https://github.com/pkgforge-dev/Pix-AppImage/actions/workflows/appimage.yml/badge.svg)](https://github.com/pkgforge-dev/Pix-AppImage/releases/latest)
+[![Latest Stable Release](https://img.shields.io/github/v/release/pkgforge-dev/Pix-AppImage)](https://github.com/pkgforge-dev/Pix-AppImage/releases/latest)
 
 <p align="center">
   <img src="https://raw.githubusercontent.com/linuxmint/pix/master/data/icons/public/hicolor/scalable/apps/pix.svg" width="128" alt="Pix Logo" />
@@ -13,7 +13,7 @@
 
 | Latest Stable Release | Upstream URL |
 | :---: | :---: |
-| [Click here](https://github.com/ArqamQazi/Pix-AppImage/releases/latest) | [Click here](https://github.com/linuxmint/pix) |
+| [Click here](https://github.com/pkgforge-dev/Pix-AppImage/releases/latest) | [Click here](https://github.com/linuxmint/pix) |
 
 </div>
 
@@ -40,6 +40,8 @@ To keep the AppImage portable, lightweight, and avoid unnecessary bloat, the fol
 - **`champlain`, `champlain-gtk`** (*Map location view*): Displays the location of geotagged photos on an embedded map. Disabled upstream as it depends on deprecated Clutter.
 - **`webkit2gtk`, `libsoup`, `json-glib`** (*Web uploaders for Flickr/23hq*): Legacy in-app upload dialogs. Omitted to avoid bundling a massive ~150–200 MB web browser engine and runtime sandboxing issues for outdated web APIs.
 - **`brasero`** (*CD/DVD burning*): Legacy optical disc burning library for writing photos to physical discs.
+
+See [upstream](https://github.com/linuxmint/pix) for more info about Xreader.
 
 ---
 
