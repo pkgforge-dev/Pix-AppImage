@@ -10,8 +10,9 @@ export UPINFO="gh-releases-zsync|${GITHUB_REPOSITORY%/*}|${GITHUB_REPOSITORY#*/}
 export DESKTOP=/usr/share/applications/pix.desktop
 export ICON=/usr/share/icons/hicolor/scalable/apps/pix.svg
 
-# Patch thumbnailers to use PATH lookup
-sed -i -e 's|/usr/bin/||g' /usr/share/thumbnailers/*.thumbnailer 2>/dev/null || true
+# Keep only the thumbnailers whose binaries are bundled and patch them for PATH lookup
+find /usr/share/thumbnailers/ -type f ! -name 'gst-*.thumbnailer' -delete 2>/dev/null || true
+sed -i -e 's|/usr/bin/||g' /usr/share/thumbnailers/gst-*.thumbnailer 2>/dev/null || true
 
 # Deploy dependencies
 quick-sharun \
