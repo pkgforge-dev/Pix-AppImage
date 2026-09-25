@@ -41,7 +41,7 @@ To keep the AppImage portable, lightweight, and avoid unnecessary bloat, the fol
 - **`webkit2gtk`, `libsoup`, `json-glib`** (*Web uploaders for Flickr/23hq*): Legacy in-app upload dialogs. Omitted to avoid bundling a massive ~150–200 MB web browser engine and runtime sandboxing issues for outdated web APIs.
 - **`brasero`** (*CD/DVD burning*): Legacy optical disc burning library for writing photos to physical discs.
 
-See [upstream](https://github.com/linuxmint/pix) for more info about Xreader.
+See [upstream](https://github.com/linuxmint/pix) for more info about Pix.
 
 ---
 
