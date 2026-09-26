@@ -10,11 +10,6 @@ export UPINFO="gh-releases-zsync|${GITHUB_REPOSITORY%/*}|${GITHUB_REPOSITORY#*/}
 export DESKTOP=/usr/share/applications/pix.desktop
 export ICON=/usr/share/icons/hicolor/scalable/apps/pix.svg
 
-export PATH_MAPPING='
-	/usr/lib/pix:${SHARUN_DIR}/lib/pix
-	/usr/share/pix:${SHARUN_DIR}/share/pix
-'
-
 # Keep only the thumbnailers whose binaries are bundled and patch them for PATH lookup
 find /usr/share/thumbnailers/ -type f ! -name 'gst-*.thumbnailer' -delete 2>/dev/null || true
 sed -i -e 's|/usr/bin/||g' /usr/share/thumbnailers/gst-*.thumbnailer 2>/dev/null || true
