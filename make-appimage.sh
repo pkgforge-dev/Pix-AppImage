@@ -4,11 +4,17 @@ set -eu
 ARCH=$(uname -m)
 export ARCH
 export OUTPATH=./dist
+export DEPLOY_GTK=1
 export DEPLOY_GSTREAMER=1
 export ADD_HOOKS="self-updater.hook"
 export UPINFO="gh-releases-zsync|${GITHUB_REPOSITORY%/*}|${GITHUB_REPOSITORY#*/}|latest|*$ARCH.AppImage.zsync"
 export DESKTOP=/usr/share/applications/pix.desktop
 export ICON=/usr/share/icons/hicolor/scalable/apps/pix.svg
+
+export PATH_MAPPING='
+	/usr/lib/pix:${SHARUN_DIR}/lib/pix
+	/usr/share/pix:${SHARUN_DIR}/share/pix
+'
 
 # Keep only the thumbnailers whose binaries are bundled and patch them for PATH lookup
 find /usr/share/thumbnailers/ -type f ! -name 'gst-*.thumbnailer' -delete 2>/dev/null || true
@@ -21,7 +27,11 @@ quick-sharun \
 	/usr/bin/gst-audio-thumbnailer \
 	/usr/lib/pix \
 	/usr/share/pix \
+	/usr/share/glib-2.0/schemas \
 	/usr/share/thumbnailers
+
+# Compile GSettings schemas for Pix and desktop
+glib-compile-schemas ./AppDir/share/glib-2.0/schemas
 
 # Turn AppDir into AppImage
 quick-sharun --make-appimage
