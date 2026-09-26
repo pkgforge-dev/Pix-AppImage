@@ -26,11 +26,7 @@ quick-sharun \
 	/usr/bin/gst-audio-thumbnailer \
 	/usr/lib/pix \
 	/usr/share/pix \
-	/usr/share/glib-2.0/schemas \
 	/usr/share/thumbnailers
-
-# Compile GSettings schemas for Pix and desktop
-glib-compile-schemas ./AppDir/share/glib-2.0/schemas
 
 # Turn AppDir into AppImage
 quick-sharun --make-appimage

@@ -67,3 +67,4 @@ meson setup build \
 
 ninja -C build
 ninja -C build install
+glib-compile-schemas /usr/share/glib-2.0/schemas
