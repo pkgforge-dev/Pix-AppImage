@@ -1,0 +1,301 @@
+diff --git a/extensions/contact_sheet/dlg-contact-sheet.c b/extensions/contact_sheet/dlg-contact-sheet.c
+index c100765..81287da 100644
+--- a/extensions/contact_sheet/dlg-contact-sheet.c
++++ b/extensions/contact_sheet/dlg-contact-sheet.c
+@@ -20,6 +20,7 @@
+  */
+ 
+ #include <config.h>
++#include "pix-prefix.h"
+ #include <glib/gi18n.h>
+ #include <gtk/gtk.h>
+ #include "dlg-contact-sheet.h"
+@@ -414,7 +415,7 @@ load_themes (DialogData *data)
+ 
+ 	/* system themes */
+ 
+-	data_dir = g_file_new_for_path (CONTACT_SHEET_DATADIR);
++	data_dir = g_file_new_for_path (pix_get_pkgdata_dir ());
+ 	style_dir = _g_file_get_child (data_dir, "contact_sheet_themes", NULL);
+ 	add_themes_from_dir (data, style_dir, FALSE);
+ 	g_object_unref (style_dir);
+diff --git a/extensions/webalbums/dlg-web-exporter.c b/extensions/webalbums/dlg-web-exporter.c
+index 5ba93e3..541f914 100644
+--- a/extensions/webalbums/dlg-web-exporter.c
++++ b/extensions/webalbums/dlg-web-exporter.c
+@@ -20,6 +20,7 @@
+  */
+ 
+ #include <config.h>
++#include "pix-prefix.h"
+ #include <glib/gi18n.h>
+ #include <gtk/gtk.h>
+ #include "dlg-web-exporter.h"
+@@ -461,7 +462,7 @@ load_themes (DialogData *data)
+ 
+ 	/* system themes */
+ 
+-	data_dir = g_file_new_for_path (WEBALBUM_DATADIR);
++	data_dir = g_file_new_for_path (pix_get_pkgdata_dir ());
+ 	style_dir = _g_file_get_child (data_dir, "albumthemes", NULL);
+ 	add_themes_from_dir (data, style_dir);
+ 	g_object_unref (style_dir);
+diff --git a/extensions/webalbums/gth-web-exporter.c b/extensions/webalbums/gth-web-exporter.c
+index 244d0a6..906d6bb 100644
+--- a/extensions/webalbums/gth-web-exporter.c
++++ b/extensions/webalbums/gth-web-exporter.c
+@@ -20,6 +20,7 @@
+  */
+ 
+ #include <config.h>
++#include "pix-prefix.h"
+ #include <string.h>
+ #include <stdio.h>
+ #include <sys/types.h>
+@@ -289,7 +290,7 @@ get_style_dir (GthWebExporter *self,
+ 
+ 	/* search in system themes */
+ 
+-	data_dir = g_file_new_for_path (WEBALBUM_DATADIR);
++	data_dir = g_file_new_for_path (pix_get_pkgdata_dir ());
+ 	style_dir = _g_file_get_child (data_dir, "albumthemes", style_name, NULL);
+ 	g_object_unref (data_dir);
+ 	if (g_file_query_exists (style_dir, NULL))
+diff --git a/meson.build b/meson.build
+index 6e19aa6..13c840b 100644
+--- a/meson.build
++++ b/meson.build
+@@ -251,6 +251,7 @@ config_data.set_quoted('GETTEXT_PACKAGE', gettext_package)
+ config_data.set_quoted('PACKAGE_NAME', meson.project_name())
+ config_data.set_quoted('PACKAGE_VERSION', meson.project_version())
+ config_data.set_quoted('PIX_API_VERSION', api_version)
++config_data.set_quoted('PIX_PREFIX', prefix)
+ config_data.set_quoted('PIX_LOCALEDIR', join_paths(prefix, get_option('localedir')))
+ config_data.set_quoted('PIX_UI_DIR', ui_data_dir)
+ config_data.set_quoted('PIX_ICON_DIR', icons_data_dir)
+diff --git a/pix/cairo-utils.c b/pix/cairo-utils.c
+index cee7c1e..fed453a 100644
+--- a/pix/cairo-utils.c
++++ b/pix/cairo-utils.c
+@@ -22,6 +22,7 @@
+ #include <config.h>
+ #include <math.h>
+ #include <string.h>
++#include "pix-prefix.h"
+ #include "cairo-utils.h"
+ #include "cairo-scale.h"
+ #include "gth-image-utils.h"
+@@ -1343,7 +1344,7 @@ _cairo_film_pattern_create (void)
+ 		char            *filename;
+ 		cairo_surface_t *surface;
+ 
+-		filename = g_build_filename (PIX_ICON_DIR, "filmholes.png", NULL);
++		filename = g_build_filename (pix_get_icon_dir (), "filmholes.png", NULL);
+ 		surface = cairo_image_surface_create_from_png (filename);
+ 		film_pattern = cairo_pattern_create_for_surface (surface);
+ 		cairo_pattern_set_filter (film_pattern, CAIRO_FILTER_GOOD);
+diff --git a/pix/gth-extensions.c b/pix/gth-extensions.c
+index 29c32e2..c1c237e 100644
+--- a/pix/gth-extensions.c
++++ b/pix/gth-extensions.c
+@@ -21,6 +21,7 @@
+ 
+ #include <config.h>
+ #include <glib/gi18n.h>
++#include "pix-prefix.h"
+ #include "glib-utils.h"
+ #include "gth-error.h"
+ #include "gth-extensions.h"
+@@ -191,12 +192,12 @@ gth_extension_module_real_open (GthExtension  *base,
+ 	{
+ 		char *extension_dir;
+ 
+-		extension_dir = g_build_filename (PIX_EXTENSIONS_DIR, self->priv->module_name, NULL);
++		extension_dir = g_build_filename (pix_get_extensions_dir (), self->priv->module_name, NULL);
+ 		file_name = g_module_build_path (extension_dir, self->priv->module_name);
+ 		g_free (extension_dir);
+ 	}
+ #else
+-	file_name = g_module_build_path (PIX_EXTENSIONS_DIR, self->priv->module_name);
++	file_name = g_module_build_path (pix_get_extensions_dir (), self->priv->module_name);
+ #endif
+ 	self->priv->module = g_module_open (file_name, G_MODULE_BIND_LAZY);
+ 	g_free (file_name);
+@@ -582,13 +583,13 @@ gth_extension_manager_load_extensions (GthExtensionManager *self)
+ 		char *path;
+ 
+ 		path = g_getenv ("PATH");
+-		path = g_strconcat (path, G_SEARCHPATH_SEPARATOR_S PIX_EXTENSIONS_DIR, NULL);
++		path = g_strconcat (path, G_SEARCHPATH_SEPARATOR_S, pix_get_extensions_dir (), NULL);
+ 		g_setenv ("PATH", path, TRUE);
+ 		g_free (path);
+ 	}
+ #endif
+ 
+-	extensions_dir = g_file_new_for_path (PIX_EXTENSIONS_DIR);
++	extensions_dir = g_file_new_for_path (pix_get_extensions_dir ());
+ 	enumerator = g_file_enumerate_children (extensions_dir, G_FILE_ATTRIBUTE_STANDARD_NAME, 0, NULL, NULL);
+ 	if (enumerator == NULL) {
+ 		g_critical ("Could not find the extensions folder: %s", g_file_get_uri (extensions_dir));
+@@ -609,7 +610,7 @@ gth_extension_manager_load_extensions (GthExtensionManager *self)
+ 		char *path;
+ 
+ 		basename = g_strconcat (name, EXTENSION_SUFFIX, NULL);
+-		path = g_build_filename (PIX_EXTENSIONS_DIR, name, basename, NULL);
++		path = g_build_filename (pix_get_extensions_dir (), name, basename, NULL);
+ 		ext_file = g_file_new_for_path (path);
+ 		ext_name = g_strdup (name);
+ 
+diff --git a/pix/gth-window.c b/pix/gth-window.c
+index 9bb4be9..67f73f3 100644
+--- a/pix/gth-window.c
++++ b/pix/gth-window.c
+@@ -21,6 +21,7 @@
+ 
+ #include <config.h>
+ #include <gtk/gtk.h>
++#include "pix-prefix.h"
+ #include "glib-utils.h"
+ #include "gth-main.h"
+ #include "gth-window.h"
+@@ -336,7 +337,7 @@ gth_window_realize (GtkWidget *widget)
+ {
+ 	GTK_WIDGET_CLASS (gth_window_parent_class)->realize (widget);
+ 
+-	gtk_icon_theme_append_search_path (gtk_icon_theme_get_for_screen (gtk_widget_get_screen (widget)), PIX_ICON_DIR);
++	gtk_icon_theme_append_search_path (gtk_icon_theme_get_for_screen (gtk_widget_get_screen (widget)), pix_get_icon_dir ());
+ 
+ 	_gth_window_add_css_provider (widget, "/org/x/Pix/resources/pix.css");
+ 	if ((gtk_major_version >= 3) && (gtk_minor_version >= 20))
+diff --git a/pix/gtk-utils.c b/pix/gtk-utils.c
+index 986fe92..fbfd409 100644
+--- a/pix/gtk-utils.c
++++ b/pix/gtk-utils.c
+@@ -21,6 +21,7 @@
+ 
+ #include <config.h>
+ #include <string.h>
++#include "pix-prefix.h"
+ #include "color-utils.h"
+ #include "gtk-utils.h"
+ 
+@@ -459,11 +460,11 @@ _gtk_builder_new_from_file (const char *ui_file,
+ 
+ #ifdef RUN_IN_PLACE
+ 	if (extension == NULL)
+-		filename = g_build_filename (PIX_UI_DIR, ui_file, NULL);
++		filename = g_build_filename (pix_get_ui_dir (), ui_file, NULL);
+ 	else
+-		filename = g_build_filename (PIX_EXTENSIONS_UI_DIR, extension, "data", "ui", ui_file, NULL);
++		filename = g_build_filename (pix_get_ui_dir (), extension, "data", "ui", ui_file, NULL);
+ #else
+-	filename = g_build_filename (PIX_UI_DIR, ui_file, NULL);
++	filename = g_build_filename (pix_get_ui_dir (), ui_file, NULL);
+ #endif
+ 
+ 	builder = gtk_builder_new ();
+diff --git a/pix/pix-prefix.h b/pix/pix-prefix.h
+new file mode 100644
+index 0000000..f59f035
+--- /dev/null
++++ b/pix/pix-prefix.h
+@@ -0,0 +1,99 @@
++/*
++ *  Pix
++ *
++ *  Copyright (C) 2026 The Free Software Foundation, Inc.
++ *
++ *  This program is free software; you can redistribute it and/or modify
++ *  it under the terms of the GNU General Public License as published by
++ *  the Free Software Foundation; either version 2 of the License, or
++ *  (at your option) any later version.
++ *
++ *  This program is distributed in the hope that it will be useful,
++ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
++ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++ *  GNU General Public License for more details.
++ *
++ *  You should have received a copy of the GNU General Public License
++ *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
++ */
++
++#ifndef PIX_PREFIX_H
++#define PIX_PREFIX_H
++
++#include <glib.h>
++#include <config.h>
++
++/* The data and module directories are normally baked in at build time (see
++ * the PIX_*_DIR defines in config.h).  Resolve them against $APPDIR when it
++ * is set, so that the same build works both installed in a normal prefix and
++ * relocated, for example inside an AppImage. */
++
++static inline const char *
++pix_get_prefix (void)
++{
++	static const char *prefix = NULL;
++
++	if (prefix == NULL) {
++		const char *appdir = g_getenv ("APPDIR");
++		prefix = (appdir != NULL && appdir[0] == '/') ? appdir : PIX_PREFIX;
++	}
++
++	return prefix;
++}
++
++static inline const char *
++pix_get_libexec_dir (void)
++{
++	static char *dir = NULL;
++
++	if (dir == NULL)
++		dir = g_build_filename (pix_get_prefix (), "lib", "pix", NULL);
++
++	return dir;
++}
++
++static inline const char *
++pix_get_pkgdata_dir (void)
++{
++	static char *dir = NULL;
++
++	if (dir == NULL)
++		dir = g_build_filename (pix_get_prefix (), "share", "pix", NULL);
++
++	return dir;
++}
++
++static inline const char *
++pix_get_ui_dir (void)
++{
++	static char *dir = NULL;
++
++	if (dir == NULL)
++		dir = g_build_filename (pix_get_pkgdata_dir (), "ui", NULL);
++
++	return dir;
++}
++
++static inline const char *
++pix_get_icon_dir (void)
++{
++	static char *dir = NULL;
++
++	if (dir == NULL)
++		dir = g_build_filename (pix_get_pkgdata_dir (), "icons", NULL);
++
++	return dir;
++}
++
++static inline const char *
++pix_get_extensions_dir (void)
++{
++	static char *dir = NULL;
++
++	if (dir == NULL)
++		dir = g_build_filename (pix_get_libexec_dir (), "extensions", NULL);
++
++	return dir;
++}
++
++#endif /* PIX_PREFIX_H */
