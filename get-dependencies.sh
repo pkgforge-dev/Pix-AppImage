@@ -42,7 +42,7 @@ pacman -Syu --noconfirm \
 
 echo "Installing debloated packages..."
 echo "---------------------------------------------------------------"
-get-debloated-pkgs --add-common --prefer-nano
+get-debloated-pkgs --add-common --prefer-nano ffmpeg-mini x265-mini
 
 echo "Building pix from upstream source..."
 echo "---------------------------------------------------------------"
