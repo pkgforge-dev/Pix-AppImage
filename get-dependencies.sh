@@ -48,14 +48,20 @@ echo "Building pix from upstream source..."
 echo "---------------------------------------------------------------"
 if [ "${DEVEL_RELEASE-}" = 1 ]; then
   git clone --depth 1 https://github.com/linuxmint/pix.git /tmp/pix
-  cd /tmp/pix
-  VERSION=$(git describe --tags --always)
+  VERSION=$(git -C /tmp/pix describe --tags --always)
 else
   TAG=$(git ls-remote --tags --refs https://github.com/linuxmint/pix.git | sed -E 's/^[0-9a-f]+[[:space:]]+refs\/tags\///' | grep -E '^[0-9]+\.[0-9]+' | sort -V | tail -n 1)
   git clone --depth 1 --branch "$TAG" https://github.com/linuxmint/pix.git /tmp/pix
-  cd /tmp/pix
   VERSION="$TAG"
 fi
+
+echo "Making pix relocatable..."
+echo "---------------------------------------------------------------"
+# make the application look for its data and module directories relative to
+# where it is installed instead of the hardcoded /usr paths
+patch -p1 -d /tmp/pix < ./patches/pix-relocatable-paths.patch
+
+cd /tmp/pix
 
 echo "$VERSION" >~/version
 
